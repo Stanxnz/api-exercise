@@ -70,9 +70,15 @@ const GAME_API = "https://spacescavanger.onrender.com/";
   
       console.log( `Planet with the shortest day: ` + `${shortestDayPlanet.name} (day length = ${shortestDayPlanet.sideralRotation} hours)`);
 
+      const jupiterResponse = await fetch(`${SOLAR_API}bodies/jupiter`);
+      const jupiterData = await jupiterResponse.json();
+
+      const jupiterMoons = jupiterData.moons || [];
+      console.log("Number of Jupiter's known moons:", jupiterMoons.length);
+
       const answer2 = closestAxialTilt.name;
       const answer3 = shortestDayPlanet.name;
-
+      const answer4 = numberOfMoons;
       const answerResponse = await fetch(`${GAME_API}answer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -96,6 +102,14 @@ const GAME_API = "https://spacescavanger.onrender.com/";
       });
       const answer3Result = await answer3Response.json();
       console.log("Submission result:", answer3Result);
+      
+      const answer4Response = await fetch(`${GAME_API}answer`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answer: answer4, player: playerId })
+      });
+      const answer4Result = await answer4Response.json();
+      console.log("Submission result:", answer4Result);
       
     } catch (error) {
       console.error("Error:", error);
