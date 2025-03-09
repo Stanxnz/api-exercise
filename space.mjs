@@ -37,6 +37,7 @@ const GAME_API = "https://spacescavanger.onrender.com/";
         let closestAxialTilt = null;
         let smallestDiff = Infinity;
         for (const planet of planets) {
+          if (planet.id === "terre") continue;
       
           const diff = Math.abs(planet.axialTilt - targetTilt);
           if (diff < smallestDiff) {
@@ -50,7 +51,7 @@ const GAME_API = "https://spacescavanger.onrender.com/";
 
       const closestAxialTilt = await findClosestPlanetByAxialTilt(earthAxialTilt);
       if (closestAxialTilt) {
-        console.log(`Planet with axial tilt closest to Earth: ${closestAxialTilt.bodie} (axial tilt: ${closestAxialTilt.axialTilt})`);
+        console.log(`Planet with axial tilt closest to Earth: ${closestAxialTilt.name} (axial tilt: ${closestAxialTilt.axialTilt})`);
       } else {
         console.log("No planet with valid axial tilt data was found.");
       }
