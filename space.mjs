@@ -102,11 +102,17 @@ const GAME_API = "https://spacescavanger.onrender.com/";
       }
       console.log(`Largest moon of Jupiter: ${largestMoon.englishName} (meanRadius: ${largestMoon.meanRadius} km)`);
 
+      const plutoResponse = await fetch(`${SOLAR_API}bodies/pluton`);
+      const plutoData = await plutoResponse.json();
+
+      const plutoClassification = plutoData.bodyType;
+      console.log("Pluto's classification:", plutoClassification);
 
       const answer2 = closestAxialTilt.name;
       const answer3 = shortestDayPlanet.name;
       const answer4 = jupiterMoons.length;
       const answer5 = largestMoon.englishName;
+      const answer6 = plutoClassification
 
       const answerResponse = await fetch(`${GAME_API}answer`, {
         method: "POST",
@@ -147,6 +153,14 @@ const GAME_API = "https://spacescavanger.onrender.com/";
       });
       const answer5Result = await answer5Response.json();
       console.log("Submission result:", answer5Result);
+
+      const answer6Response = await fetch(`${GAME_API}answer`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answer: answer6, player: playerId })
+      });
+      const answer6Result = await answer6Response.json();
+      console.log("Submission result:", answer6Result);
       
     } catch (error) {
       console.error("Error:", error);
