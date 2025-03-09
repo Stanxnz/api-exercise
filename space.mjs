@@ -59,9 +59,11 @@ const GAME_API = "https://spacescavanger.onrender.com/";
       let minRotation = Infinity;
   
       for (const planet of planets) {
+
+        const rotation = Math.abs(planet.sideralRotation);
   
-        if (planet.sideralRotation < minRotation) {
-          minRotation = planet.sideralRotation;
+        if (rotation < minRotation) {
+          minRotation = rotation;
           shortestDayPlanet = planet;
         }
       }
