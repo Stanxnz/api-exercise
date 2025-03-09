@@ -6,13 +6,18 @@ const GAME_API = "https://spacescavanger.onrender.com/";
 
 (async function() {
     try {
-      const startResponse = await fetch(`${GAME_API}start?player=${encodeURIComponent(playerId)}`);
+      const startUrl = `${GAME_API}start?player=${encodeURIComponent(playerId)}`;
+      const startResponse = await fetch(startUrl);
       const startData = await startResponse.json();
       console.log("Challenge started:", startData);
   
-      const earthResponse = await fetch(`${SOLAR_API}bodies/earth`);
+      const earthResponse = await fetch(`${SOLAR_API}bodies/terre`);
       const earthData = await earthResponse.json();
       console.log("Earth data:", earthData);
+
+      const sunResponse = await fetch(`${SOLAR_API}bodies/soleil`);
+      const sunData = await sunResponse.json();
+      console.log("Sun data:", sunData);
   
       const answerResponse = await fetch(`${GAME_API}answer`, {
         method: "POST",
