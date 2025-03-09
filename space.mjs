@@ -27,12 +27,11 @@ const GAME_API = "https://spacescavanger.onrender.com/";
       const earthAxialTilt = earthData.axialTilt;
       console.log("Earth axial tilt:", earthAxialTilt);
 
-      async function findClosestPlanetByAxialTilt(targetTilt) {
-  
-        const bodiesResponse = await fetch(`${SOLAR_API}bodies`);
-        const bodiesData = await bodiesResponse.json();
+      const bodiesResponse = await fetch(`${SOLAR_API}bodies`);
+      const bodiesData = await bodiesResponse.json();
+      const planets = bodiesData.bodies.filter(body => body.isPlanet);
 
-        const planets = bodiesData.bodies.filter(body => body.isPlanet);
+      async function findClosestPlanetByAxialTilt(targetTilt) {
 
         let closestAxialTilt = null;
         let smallestDiff = Infinity;
@@ -55,8 +54,6 @@ const GAME_API = "https://spacescavanger.onrender.com/";
       } else {
         console.log("No planet with valid axial tilt data was found.");
       }
-
-      const planets = bodiesData.bodies.filter(body => body.isPlanet);
 
       let shortestDayPlanet = null;
       let minRotation = Infinity;
