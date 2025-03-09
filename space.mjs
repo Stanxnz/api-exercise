@@ -18,6 +18,11 @@ const GAME_API = "https://spacescavanger.onrender.com/";
       const sunResponse = await fetch(`${SOLAR_API}bodies/soleil`);
       const sunData = await sunResponse.json();
       console.log("Sun data:", sunData);
+
+      const diffBetweenEquatorialAndMeanRadius = sunData.equaRadius - sunData.meanRadius;
+      console.log("Difference between the equatorial and mean radius:", diffBetweenEquatorialAndMeanRadius);
+
+      const answer = diffBetweenEquatorialAndMeanRadius;
   
       const answerResponse = await fetch(`${GAME_API}answer`, {
         method: "POST",
