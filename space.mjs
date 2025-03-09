@@ -76,9 +76,38 @@ const GAME_API = "https://spacescavanger.onrender.com/";
       const jupiterMoons = jupiterData.moons || [];
       console.log("Number of Jupiter's known moons:", jupiterMoons.length);
 
+      const moonDetails = await Promise.all(
+        jupiterMoons.map(async (moonObj) => {
+          try {
+            const res = await fetch(moonObj.rel);
+            if (!res.ok) {
+              console.warn(`Skipping ${moonObj.moon}, fetch returned ${res.status}`);
+              return null;
+            }
+            return await res.json();
+          } catch (err) {
+            return null;
+          }
+        })
+      );
+      
+      let largestMoon = null;
+      let maxRadius = -Infinity;
+      for (const moon of moonDetails) {
+        
+        if (moon.meanRadius && moon.meanRadius > maxRadius) {
+          maxRadius = moon.meanRadius;
+          largestMoon = moon;
+        }
+      }
+      console.log(`Largest moon of Jupiter: ${largestMoon.englishName} (meanRadius: ${largestMoon.meanRadius} km)`);
+
+
       const answer2 = closestAxialTilt.name;
       const answer3 = shortestDayPlanet.name;
-      const answer4 = numberOfMoons;
+      const answer4 = jupiterMoons.length;
+      const answer5 = largestMoon.englishName;
+
       const answerResponse = await fetch(`${GAME_API}answer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -110,6 +139,14 @@ const GAME_API = "https://spacescavanger.onrender.com/";
       });
       const answer4Result = await answer4Response.json();
       console.log("Submission result:", answer4Result);
+
+      const answer5Response = await fetch(`${GAME_API}answer`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answer: answer5, player: playerId })
+      });
+      const answer5Result = await answer5Response.json();
+      console.log("Submission result:", answer5Result);
       
     } catch (error) {
       console.error("Error:", error);
