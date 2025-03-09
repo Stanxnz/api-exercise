@@ -23,6 +23,9 @@ const GAME_API = "https://spacescavanger.onrender.com/";
       console.log("Difference between the equatorial and mean radius:", diffBetweenEquatorialAndMeanRadius);
 
       const answer = diffBetweenEquatorialAndMeanRadius;
+
+      const earthAxialTilt = earthData.axialTilt;
+      console.log("Earth axial tilt:", earthAxialTilt);
   
       const answerResponse = await fetch(`${GAME_API}answer`, {
         method: "POST",
