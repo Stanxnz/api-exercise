@@ -49,8 +49,6 @@ const GAME_API = "https://spacescavanger.onrender.com/";
         return closestAxialTilt;
       }
 
-      
-
       const closestAxialTilt = await findClosestPlanetByAxialTilt(earthAxialTilt);
       if (closestAxialTilt) {
         console.log(`Planet with axial tilt closest to Earth: ${closestAxialTilt.name} (axial tilt: ${closestAxialTilt.axialTilt})`);
@@ -58,7 +56,23 @@ const GAME_API = "https://spacescavanger.onrender.com/";
         console.log("No planet with valid axial tilt data was found.");
       }
 
+      const planets = bodiesData.bodies.filter(body => body.isPlanet);
+
+      let shortestDayPlanet = null;
+      let minRotation = Infinity;
+  
+      for (const planet of planets) {
+  
+        if (planet.sideralRotation < minRotation) {
+          minRotation = planet.sideralRotation;
+          shortestDayPlanet = planet;
+        }
+      }
+  
+      console.log( `Planet with the shortest day: ` + `${shortestDayPlanet.name} (day length = ${shortestDayPlanet.sideralRotation} hours)`);
+
       const answer2 = closestAxialTilt.name;
+      const answer3 = shortestDayPlanet.name;
 
       const answerResponse = await fetch(`${GAME_API}answer`, {
         method: "POST",
@@ -75,6 +89,14 @@ const GAME_API = "https://spacescavanger.onrender.com/";
       });
       const answer2Result = await answer2Response.json();
       console.log("Submission result:", answer2Result);
+
+      const answer3Response = await fetch(`${GAME_API}answer`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answer: answer3, player: playerId })
+      });
+      const answer3Result = await answer3Response.json();
+      console.log("Submission result:", answer3Result);
       
     } catch (error) {
       console.error("Error:", error);
