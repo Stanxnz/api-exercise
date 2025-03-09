@@ -49,13 +49,17 @@ const GAME_API = "https://spacescavanger.onrender.com/";
         return closestAxialTilt;
       }
 
+      
+
       const closestAxialTilt = await findClosestPlanetByAxialTilt(earthAxialTilt);
       if (closestAxialTilt) {
         console.log(`Planet with axial tilt closest to Earth: ${closestAxialTilt.name} (axial tilt: ${closestAxialTilt.axialTilt})`);
       } else {
         console.log("No planet with valid axial tilt data was found.");
       }
-  
+
+      const answer2 = closestAxialTilt.name;
+
       const answerResponse = await fetch(`${GAME_API}answer`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -63,6 +67,14 @@ const GAME_API = "https://spacescavanger.onrender.com/";
       });
       const answerResult = await answerResponse.json();
       console.log("Submission result:", answerResult);
+
+      const answer2Response = await fetch(`${GAME_API}answer`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ answer: answer2, player: playerId })
+      });
+      const answer2Result = await answer2Response.json();
+      console.log("Submission result:", answer2Result);
       
     } catch (error) {
       console.error("Error:", error);
